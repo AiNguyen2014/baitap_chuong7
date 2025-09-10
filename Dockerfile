@@ -1,19 +1,9 @@
-FROM openjdk:24-jdk-slim AS base
+FROM tomcat:9.0-jdk17
 
-# Cài wget + tar
-RUN apt-get update && apt-get install -y wget tar && rm -rf /var/lib/apt/lists/*
-
-# Cài Tomcat 
-RUN wget https://downloads.apache.org/tomcat/tomcat-9/v9.0.81/bin/apache-tomcat-9.0.81.tar.gz \
-    && tar xzf apache-tomcat-9.0.81.tar.gz \
-    && mv apache-tomcat-9.0.81 /usr/local/tomcat \
-    && rm apache-tomcat-9.0.81.tar.gz
-
-ENV CATALINA_HOME=/usr/local/tomcat
-ENV PATH="$CATALINA_HOME/bin:$PATH"
-
-# Copy war vào Tomcat
+# Xóa ứng dụng mặc định
 RUN rm -rf /usr/local/tomcat/webapps/*
+
+# Copy file WAR của bạn
 COPY baitap_chuong_7.war /usr/local/tomcat/webapps/ROOT.war
 
 EXPOSE 8080
